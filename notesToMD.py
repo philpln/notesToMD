@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import time
 import schedule
+import shutil
 
 
 year_month_day_format = '%Y-%m-%d'
@@ -12,6 +13,8 @@ year_month_day_format = '%Y-%m-%d'
 notesapp = NotesApp()
 
 def noteToMD():
+    with open("pathname.txt","r") as pathfile:
+        pathname = pathfile.readline()
     notes = notesapp.notes(accounts=["iCloud"])
     cleaned = []
 ## this loop removes all the files that are not in the "toObsidian Folder"
@@ -40,7 +43,7 @@ def noteToMD():
 
         with open(note.name + ".md", "w") as file1:
             file1.write(markdown_text)
-
+        shutil.move(note.name+".md",pathname+note.name+".md")
         with open("processedFiles.json","w") as processed:
             filenameDict = {note.name:note.modification_date}
             processedFile[note.name]=note.modification_date.strftime(year_month_day_format)
@@ -51,21 +54,3 @@ print(schedule.get_jobs())
 while True:
     schedule.run_pending()
     time.sleep(1)
-# print("name:",
-#     note.name)
-# print(
-#     note.body,
-# # )
-# print(re.sub('^<div><h1>.*?</h1></div>',"",note.body))
-
-# markdown_text = markdownify.markdownify(stripped)
-# #print(markdown_text)
-# with open(note.name + ".md", "w") as file1:
-#     file1.write(markdown_text)
-# with open("processedFiles.json","r") as processed:
-#     processedFile = json.load(processed)
-# with open("processedFiles.json","w") as processed:
-#     filenameDict = {note.name:note.modification_date}
-#     processedFile[note.name]=note.modification_date.strftime(year_month_day_format)
-#     json.dump(processedFile,processed)
-#print(note.asdict()
