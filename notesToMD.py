@@ -14,7 +14,7 @@ notesapp = NotesApp()
 def noteToMD():
     notes = notesapp.notes(accounts=["iCloud"])
     cleaned = []
-
+## this loop removes all the files that are not in the "toObsidian Folder"
     for i in range(len(notes)):
         if notes[i].folder != "toObsidian":
             break
